@@ -27,14 +27,22 @@
 
     <div class="ui-g">
         <div class="ui-g-12">
-          <p-dataTable [value]="lancamentos" [rows]="2" [paginator]="true" [responsive]="true">
+          <p-dataTable [value]="lancamentos" [rows]="5" [paginator]="true" [responsive]="true">
             <p-column field="pessoa" header="Pessoa"></p-column>
             <p-column field="descricao" header="Descrição"></p-column>
-            <p-column field="dataVencimento" header="Vencimento" styleClass="col-data" ></p-column>
-            <p-column field="dataPagamento" header="Pagamento" styleClass="col-data" ></p-column>
+            <p-column field="dataVencimento" header="Vencimento" styleClass="col-data" >
+              <ng-template let-venc="rowData" pTemplate="body">
+                {{venc.dataVencimento | date:'dd/MM/y'}}
+              </ng-template>
+            </p-column>
+            <p-column field="dataPagamento" header="Pagamento" styleClass="col-data" >
+                <ng-template let-pag="rowData" pTemplate="body">
+                    {{pag.dataPagamento | date:'dd/MM/y'}}
+                  </ng-template>
+            </p-column>
             <p-column field="valor" header="Valor" styleClass="col-valor" >
               <ng-template let-lanc="rowData" pTemplate="body">
-                <span [style.color]="lanc.tipo === 'DESPESA' ? 'red' : 'blue'">{{lanc.valor}}</span>
+                <span [style.color]="lanc.tipo === 'DESPESA' ? 'red' : 'blue'">{{lanc.valor | currency:'BRL':'true':'1.2-2'}}</span>
               </ng-template>
             </p-column>
             <p-column styleClass="col-acoes">
