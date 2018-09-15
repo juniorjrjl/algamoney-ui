@@ -13,7 +13,7 @@
       <div class="ui-g-6 ui-md-3 ui-fluid">
         <label>Vencimento</label>
         <p-calendar dateFormat="dd/mm/yy" name="vencimento" ngModel #vencimento="ngModel" required></p-calendar>
-        <!--app-message [control]="vencimento" error="required" text="Informe uma data de vencimento"></app-message-->
+        <app-message [control]="vencimento" error="required" text="Informe uma data de vencimento"></app-message>
       </div>
       <div class="ui-g-6 ui-md-3 ui-fluid">
         <label>{{tipo.value === 'RECEITA' ? 'Recebimento' : 'Pagamento'}}</label>
@@ -23,8 +23,8 @@
       <div class="ui-g-12 ui-md-9 ui-fluid">
         <label>Descrição</label>
         <input pInputText type="text" name="descricao"  ngModel #descricao="ngModel" required minlength="5"/>
-        <!--app-message [control]="descricao" error="required" text="Informe uma descrição"></app-message-->
-        <!--app-message [control]="descricao" error="minlength" text="Informe no mínimo {{descricao.errors?.minlength?.requiredLength}} caractéres (atual {{descricao.errors?.minlength?.actualLength}})"></app-message-->
+        <app-message [control]="descricao" error="required" text="Informe uma descrição"></app-message>
+        <app-message [control]="descricao" error="minlength" text="Informe no mínimo {{descricao.errors?.minlength?.requiredLength}} caractéres (atual {{descricao.errors?.minlength?.actualLength}})"></app-message>
       </div>
 
       <div class="ui-g-12 ui-md-3 ui-fluid">

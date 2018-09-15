@@ -1,4 +1,3 @@
-import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { FormsModule } from '@angular/forms';
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
@@ -14,6 +13,8 @@ import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { ButtonModule } from 'primeng/components/button/button';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton';
+import { SharedModule } from './../shared/shared.module';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton
     FormsModule,
     InputTextModule,
     ButtonModule,
+    SharedModule,
     DataTableModule,
     TooltipModule,
     InputTextareaModule,
