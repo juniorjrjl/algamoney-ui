@@ -22,7 +22,7 @@ export class LancamentosPesquisaComponent implements OnInit {
   }
 
   public pesquisar(pagina = 0) {
-    this.filtro.pagina = pagina
+    this.filtro.pagina = pagina;
     this.lancamentoService.pesquisar(this.filtro)
     .then(resultado => {
       this.totalregistros = resultado.total;
