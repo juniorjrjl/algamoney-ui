@@ -24,11 +24,11 @@ export class LancamentosPesquisaComponent implements OnInit {
   public pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
     this.lancamentoService.pesquisar(this.filtro)
-    .then(resultado => {
-      this.totalregistros = resultado.total;
-      this.lancamentos = resultado.lancamentos;
-    })
-    .catch(error() => this.errorHandler.handler(error));
+      .then(resultado => {
+        this.totalregistros = resultado.total;
+        this.lancamentos = resultado.lancamentos;
+      })
+      .catch(error => this.errorHandler.handler(error));
   }
 
   confirmarExclusao(lancamento: any) {
@@ -50,7 +50,7 @@ export class LancamentosPesquisaComponent implements OnInit {
         }
         this.toastyService.success('Lançamento excluído com sucesso!');
       })
-      .catch(error() => this.errorHandler.handler(error));
+      .catch(error => this.errorHandler.handler(error));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
