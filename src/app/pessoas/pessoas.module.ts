@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
-import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 import { PessoaCadastroComponent } from './pessoa-cadastro/pessoa-cadastro.component';
 import { SharedModule } from './../shared/shared.module';
 import { ButtonModule } from 'primeng/components/button/button';
@@ -31,8 +30,7 @@ import { InputTextModule } from 'primeng/components/inputtext/inputtext';
   ],
   declarations: [
     PessoaCadastroComponent,
-    PessoasPesquisaComponent,
-    PessoasGridComponent
+    PessoasPesquisaComponent
   ]
 })
 export class PessoasModule { }
