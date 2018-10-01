@@ -1,3 +1,5 @@
+import { RouterModule } from '@angular/router';
+import { CategoriaService } from './../categorias/categoria.service';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -12,6 +14,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
 
     ToastyModule.forRoot(),
@@ -28,6 +31,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
   providers: [
     LancamentoService,
     PessoaService,
+    CategoriaService,
     ConfirmationService,
     {provide: LOCALE_ID, useValue: 'pt-BR'},
     ErrorHandlerService

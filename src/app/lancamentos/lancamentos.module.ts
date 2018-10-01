@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
@@ -17,6 +18,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     InputTextModule,
