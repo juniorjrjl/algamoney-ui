@@ -1,17 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
 
 import { PessoaFiltro } from '../pessoaFiltro';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { ToastyService } from 'ng2-toasty';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pessoas-pesquisa',
   templateUrl: './pessoas-pesquisa.component.html',
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
-export class PessoasPesquisaComponent {
+export class PessoasPesquisaComponent implements OnInit{
 
   totalregistros = 0;
   pessoas = [];
@@ -73,8 +74,13 @@ export class PessoasPesquisaComponent {
     private pessoaService: PessoaService,
     private errorHandler: ErrorHandlerService,
     private confirmation: ConfirmationService,
-    private toasty: ToastyService) {
+    private toasty: ToastyService,
+    private title: Title) {
 
+  }
+
+  ngOnInit(): void {
+    this.title.setTitle('Pesquisa de Pessoas');
   }
 
 }

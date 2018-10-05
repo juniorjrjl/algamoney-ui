@@ -1,4 +1,4 @@
-import { RouterModule } from '@angular/router';
+import { PessoasRoutingModule } from './pessoas-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,6 @@ import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 
 @NgModule({
   imports: [
-    RouterModule,
     CommonModule,
     FormsModule,
     InputTextModule,
@@ -24,15 +23,13 @@ import { InputTextModule } from 'primeng/components/inputtext/inputtext';
     TooltipModule,
     InputSwitchModule,
     ButtonModule,
-    SharedModule
-  ],
-  exports: [
-    PessoaCadastroComponent,
-    PessoasPesquisaComponent
+    SharedModule,
+    PessoasRoutingModule
   ],
   declarations: [
     PessoaCadastroComponent,
     PessoasPesquisaComponent
-  ]
+  ],
+  exports: []
 })
 export class PessoasModule { }
