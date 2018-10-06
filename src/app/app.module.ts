@@ -1,3 +1,5 @@
+import { SegurancaModule } from './seguranca/seguranca.module';
+import { SegurancaRoutingModule } from './seguranca/seguranca-routing.module';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +26,8 @@ import { AppRoutingModule } from './app-routing.module';
     CoreModule,
     LancamentosModule,
     PessoasModule,
+    SegurancaModule,
+    SegurancaRoutingModule,
     AppRoutingModule
   ],
   providers: [],

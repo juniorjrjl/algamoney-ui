@@ -12,6 +12,7 @@ import { LancamentoService } from '../lancamentos/lancamento.service';
 import { PessoaService } from '../pessoas/pessoa.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
+import { AuthService } from './../seguranca/auth.service';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao
     ConfirmationService,
     Title,
     {provide: LOCALE_ID, useValue: 'pt-BR'},
-    ErrorHandlerService
+    ErrorHandlerService,
+    AuthService
   ]
 })
 export class CoreModule { }
