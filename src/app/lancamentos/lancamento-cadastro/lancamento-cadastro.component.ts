@@ -3,12 +3,13 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { LancamentoModelo } from './../../core/lancamentoModelo';
+import { LancamentoModelo } from '../../core/lancamento.modelo';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
-import { PessoaService } from '../../pessoas/pessoa.service';
+import { PessoaService } from './../../pessoas/pessoa.service';
 import { ToastyService } from 'ng2-toasty';
 import { LancamentoService } from './../lancamento.service';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -88,10 +89,9 @@ export class LancamentoCadastroComponent implements OnInit {
 
   adicionar(form: FormControl) {
     this.lancamentoService.adicionar(this.lancamento)
-      .then(() => {
+      .then(lancamento => {
         this.toastyService.success('Lançamento adicionado com sucesso!');
-        form.reset();
-        this.lancamento = new LancamentoModelo();
+        this.router.navigate(['/lancamentos', lancamento.codigo]);
       })
       .catch(erro => this.errorHandlerService.handler(erro));
   }

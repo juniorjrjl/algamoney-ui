@@ -4,6 +4,7 @@ import { CategoriaService } from './../categorias/categoria.service';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import {JwtHelper} from 'angular2-jwt';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ErrorHandlerService } from './error-handler.service';
 import { ToastyModule} from 'ng2-toasty';
@@ -38,6 +39,7 @@ import { AuthService } from './../seguranca/auth.service';
     CategoriaService,
     ConfirmationService,
     Title,
+    JwtHelper,
     {provide: LOCALE_ID, useValue: 'pt-BR'},
     ErrorHandlerService,
     AuthService

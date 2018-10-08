@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './pessoas-pesquisa.component.html',
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
-export class PessoasPesquisaComponent implements OnInit{
+export class PessoasPesquisaComponent implements OnInit {
 
   totalregistros = 0;
   pessoas = [];

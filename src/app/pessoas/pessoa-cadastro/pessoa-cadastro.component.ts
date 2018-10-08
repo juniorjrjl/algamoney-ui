@@ -6,7 +6,7 @@ import { ToastyService } from 'ng2-toasty';
 
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { PessoaModelo } from './../../core/pessoaModelo';
+import { PessoaModelo } from '../../core/pessoa.modelo';
 
 @Component({
   selector: 'app-pessoa-cadastro',
