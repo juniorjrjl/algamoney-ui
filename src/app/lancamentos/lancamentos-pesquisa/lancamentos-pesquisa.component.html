@@ -56,7 +56,9 @@
                 <p-column styleClass="col-acoes">
                     <ng-template pTemplate="body" let-lanc="rowData">
                       <a [routerLink]="['/lancamentos', lanc.codigo]" pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top"></a>
-                      <button pButton icon="fa fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(lanc)"></button>
+                      <button pButton icon="fa fa-trash" pTooltip="Excluir"
+                      tooltipPosition="top" (click)="confirmarExclusao(lanc)"
+                      [disabled]="!authService.temPermissao('ROLE_REMOVER_LANCAMENTO')"></button>
                     </ng-template>
                 </p-column>
             </p-dataTable>

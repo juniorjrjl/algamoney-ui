@@ -14,6 +14,7 @@ import { PessoaService } from '../pessoas/pessoa.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
 import { AuthService } from './../seguranca/auth.service';
+import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
 
 
 @NgModule({
@@ -26,12 +27,14 @@ import { AuthService } from './../seguranca/auth.service';
   ],
   declarations: [
     NavbarComponent,
-    PaginaNaoEncontradaComponent
+    PaginaNaoEncontradaComponent,
+    NaoAutorizadoComponent
   ],
   exports: [
     NavbarComponent,
     ToastyModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    NaoAutorizadoComponent
   ],
   providers: [
     LancamentoService,

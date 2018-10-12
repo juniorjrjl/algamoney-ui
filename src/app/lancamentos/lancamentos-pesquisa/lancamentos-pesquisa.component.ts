@@ -6,6 +6,7 @@ import { LancamentoFiltro } from './../lancamentoFiltro';
 import { LancamentoService } from './../lancamento.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from './../../seguranca/auth.service';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -62,6 +63,7 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   constructor(
     private lancamentoService: LancamentoService,
+    private authService: AuthService,
     private toastyService: ToastyService,
     private confirmation: ConfirmationService,
     private errorHandler: ErrorHandlerService,
