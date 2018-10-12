@@ -45,6 +45,14 @@ export class PessoaCadastroComponent implements OnInit {
       .catch(erro => this.errorHandler.handler(erro));
   }
 
+  salvar(form: FormControl) {
+    if (this.pessoa.codigo) {
+      this.atualizarPessoa(form);
+    } else {
+      this.adicionarPessoa(form);
+    }
+  }
+
   adicionarPessoa(form: FormControl) {
     this.pessoaService.adicionar(this.pessoa)
       .then(pessoaAdicionada => {
@@ -63,6 +71,16 @@ export class PessoaCadastroComponent implements OnInit {
         this.tituloAtualizacao();
       })
       .catch(erro => this.errorHandler.handler(erro));
+  }
+
+  novo(form: FormControl) {
+    form.reset();
+
+    setTimeout(function() {
+      this.pessoa = new PessoaModelo();
+    }.bind(this), 1);
+
+    this.router.navigate(['/pessoas/nova']);
   }
 
   private tituloAtualizacao() {

@@ -14,7 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class PessoasPesquisaComponent implements OnInit {
 
-  totalregistros = 0;
+  totalRegistros = 0;
   pessoas = [];
   filtro = new PessoaFiltro();
   @ViewChild('tabela') tabela;
@@ -23,7 +23,7 @@ export class PessoasPesquisaComponent implements OnInit {
     this.filtro.pagina = pagina;
     this.pessoaService.pesquisar(this.filtro)
     .then(resultado => {
-      this.totalregistros = resultado.total;
+      this.totalRegistros = resultado.total;
       this.pessoas = resultado.pessoas;
     })
     .catch(erro => this.errorHandler.handler(erro));
