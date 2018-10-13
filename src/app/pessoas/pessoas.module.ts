@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 import { PessoaCadastroComponent } from './pessoa-cadastro/pessoa-cadastro.component';
 import { SharedModule } from './../shared/shared.module';
-import { ButtonModule } from 'primeng/components/button/button';
-import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
-import { TooltipModule } from 'primeng/components/tooltip/tooltip';
-import { DataTableModule } from 'primeng/components/datatable/datatable';
-import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
-import { InputTextModule } from 'primeng/components/inputtext/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { TooltipModule } from 'primeng/tooltip';
+import { TableModule } from 'primeng/table';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
 import { PessoasRoutingModule } from './pessoas-routing.module';
 
 @NgModule({
@@ -20,7 +20,7 @@ import { PessoasRoutingModule } from './pessoas-routing.module';
     FormsModule,
     InputTextModule,
     InputMaskModule,
-    DataTableModule,
+    TableModule,
     TooltipModule,
     InputSwitchModule,
     ButtonModule,

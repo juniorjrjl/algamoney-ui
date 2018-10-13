@@ -5,14 +5,14 @@ import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-ca
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { InputTextModule } from 'primeng/components/inputtext/inputtext';
-import { DropdownModule } from 'primeng/components/dropdown/dropdown';
-import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
-import { TooltipModule } from 'primeng/components/tooltip/tooltip';
-import { DataTableModule } from 'primeng/components/datatable/datatable';
-import { ButtonModule } from 'primeng/components/button/button';
-import { CalendarModule } from 'primeng/components/calendar/calendar';
-import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TooltipModule } from 'primeng/tooltip';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { SharedModule } from './../shared/shared.module';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -24,7 +24,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     InputTextModule,
     ButtonModule,
     SharedModule,
-    DataTableModule,
+    TableModule,
     TooltipModule,
     InputTextareaModule,
     CalendarModule,

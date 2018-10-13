@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api';
+import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
 
 import { PessoaFiltro } from '../pessoaFiltro';
 import { PessoaService } from '../pessoa.service';
@@ -58,7 +58,7 @@ export class PessoasPesquisaComponent implements OnInit {
   }
 
   alternarStatus(pessoa: any): void {
-    const novoStatus = !pessoa.ativo;
+    const novoStatus = pessoa.ativo;
 
     this.pessoaService.mudarStatus(pessoa.codigo, novoStatus)
       .then(() => {

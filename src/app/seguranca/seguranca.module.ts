@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { LoginFormComponent } from './login-form/login-form.component';
-import { InputTextModule } from 'primeng/components/inputtext/inputtext';
-import { ButtonModule } from 'primeng/components/button/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 import { Http, RequestOptions } from '@angular/http';
 import { MoneyHttp } from './money.http';
 import { AuthService } from './auth.service';
