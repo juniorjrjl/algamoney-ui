@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { FileUploadModule } from 'primeng/fileupload';
 import { SharedModule } from './../shared/shared.module';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -32,6 +33,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     DropdownModule,
     SelectButtonModule,
     CalendarModule,
+    FileUploadModule,
     CurrencyMaskModule,
     LancamentosRoutingModule
   ],

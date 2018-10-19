@@ -80,6 +80,10 @@ export class LancamentoService {
       });
   }
 
+  urlUploadAnexo(): string {
+    return `${this.lancamentoUrl}/anexo`;
+  }
+
   private converterStringsParaDatas(lancamentos: LancamentoModelo[]) {
     for (const lancamento of lancamentos) {
       lancamento.dataVencimento = moment(lancamento.dataVencimento,
