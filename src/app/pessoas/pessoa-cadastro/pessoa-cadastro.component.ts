@@ -7,6 +7,7 @@ import { ToastyService } from 'ng2-toasty';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { PessoaModelo } from '../../core/pessoa.modelo';
+import { ContatoModelo } from '../../core/contatoModelo';
 
 @Component({
   selector: 'app-pessoa-cadastro',
@@ -16,6 +17,9 @@ import { PessoaModelo } from '../../core/pessoa.modelo';
 export class PessoaCadastroComponent implements OnInit {
 
   pessoa = new PessoaModelo();
+  exibindoFormularioContato = false;
+  contato;
+  contatoIndex: number;
 
   constructor(
     private pessoaService: PessoaService,
@@ -81,6 +85,32 @@ export class PessoaCadastroComponent implements OnInit {
     }.bind(this), 1);
 
     this.router.navigate(['/pessoas/nova']);
+  }
+
+  public prepararEdicaoContato(contato: ContatoModelo, index: number) {
+    this.contato = this.clonarContato(contato);
+    this.exibindoFormularioContato = true;
+    this.contatoIndex = index;
+  }
+
+  public preparaNovoContato() {
+    this.exibindoFormularioContato = true;
+    this.contato = new ContatoModelo();
+    this.contatoIndex = this.pessoa.contatos.length;
+  }
+
+  public ConfirmarContato(frm: FormControl) {
+    this.pessoa.contatos[this.contatoIndex] = this.clonarContato(this.contato);
+    this.exibindoFormularioContato = false;
+    frm.reset();
+  }
+
+  public removerContato(index: number) {
+    this.pessoa.contatos.splice(index, 1);
+  }
+
+  private clonarContato(contato: ContatoModelo): ContatoModelo {
+    return new ContatoModelo(contato.codigo, contato.nome, contato.email, contato.telefone);
   }
 
   private tituloAtualizacao() {

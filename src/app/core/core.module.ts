@@ -16,6 +16,8 @@ import { ConfirmationService } from 'primeng/api';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
 import { AuthService } from './../seguranca/auth.service';
 import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
+import { DashboardService } from './../dashboard/dashboard.service';
+import { RelatoriosService } from './../relatorios/relatorios.service';
 
 registerLocaleData(localePt);
 
@@ -42,6 +44,8 @@ registerLocaleData(localePt);
     LancamentoService,
     PessoaService,
     CategoriaService,
+    DashboardService,
+    RelatoriosService,
     ConfirmationService,
     Title,
     JwtHelper,

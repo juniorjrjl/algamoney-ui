@@ -13,6 +13,8 @@ import { TableModule } from 'primeng/table';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { PessoasRoutingModule } from './pessoas-routing.module';
+import { PanelModule } from 'primeng/panel';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import { PessoasRoutingModule } from './pessoas-routing.module';
     InputSwitchModule,
     ButtonModule,
     SharedModule,
+    PanelModule,
+    DialogModule,
     PessoasRoutingModule
   ],
   declarations: [

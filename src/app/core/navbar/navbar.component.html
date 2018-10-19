@@ -13,6 +13,8 @@
     <li class="navbar-usuario">{{ authService.jwtPayload?.nome }}</li>
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="authService.temPermissao('ROLE_PESQUISAR_LANCAMENTO')"><a routerLink="/lancamentos">Lançamentos</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="authService.temPermissao('ROLE_PESQUISAR_PESSOA')"><a routerLink="/pessoas">Pessoas</a></li>
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="authService.temPermissao('ROLE_PESQUISAR_LANCAMENTO')"><a routerLink="/dashboard">Gráfico de gasto</a></li>
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="authService.temPermissao('ROLE_PESQUISAR_LANCAMENTO')"><a routerLink="/relatorios/lancamentos">Relatório de gastos</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="#" (click)="logout()">Logout</a></li>
   </ul>
 
