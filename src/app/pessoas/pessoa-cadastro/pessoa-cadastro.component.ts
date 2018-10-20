@@ -17,6 +17,9 @@ import { ContatoModelo } from '../../core/contatoModelo';
 export class PessoaCadastroComponent implements OnInit {
 
   pessoa = new PessoaModelo();
+  estados: any[];
+  estadoSelecionado: number;
+  cidades: any[];
 
   constructor(
     private pessoaService: PessoaService,
@@ -35,12 +38,33 @@ export class PessoaCadastroComponent implements OnInit {
     } else {
       this.tituloAtualizacao();
     }
+    this.carregarEstados();
+  }
+
+  carregarCidades() {
+    this.pessoaService.pesquisarCidades(this.estadoSelecionado)
+      .then(cidades => {
+          this.cidades = cidades.map(c => ({label: c.nome, value: c.codigo}));
+        })
+      .catch(erro => this.errorHandler.handler(erro));
+  }
+
+  carregarEstados() {
+    this.pessoaService.listarEstados()
+      .then(estados => {
+          this.estados = estados.map(uf => ({label: uf.nome, value: uf.codigo}));
+        })
+      .catch(erro => this.errorHandler.handler(erro));
   }
 
   carregarPessoa(codigo: number) {
     this.pessoaService.buscarPorCodigo(codigo)
       .then(pessoa => {
         this.pessoa = pessoa;
+        this.estadoSelecionado = (this.pessoa.endereco.cidade) ? this.pessoa.endereco.cidade.estado.codigo  : null;
+        if (this.estadoSelecionado) {
+          this.carregarCidades()
+        }
         this.tituloAtualizacao();
       })
       .catch(erro => this.errorHandler.handler(erro));
