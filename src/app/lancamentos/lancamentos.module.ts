@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SharedModule } from './../shared/shared.module';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -34,6 +35,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     SelectButtonModule,
     CalendarModule,
     FileUploadModule,
+    ProgressSpinnerModule,
     CurrencyMaskModule,
     LancamentosRoutingModule
   ],

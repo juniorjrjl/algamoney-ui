@@ -11,4 +11,6 @@ export class LancamentoModelo {
   observacao: string;
   pessoa = new PessoaModelo();
   categoria = new CategoriaModelo();
+  anexo: string;
+  urlAnexo: string;
 }
