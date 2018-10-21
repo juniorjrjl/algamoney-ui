@@ -4,7 +4,7 @@ import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
 import { PessoaFiltro } from '../pessoaFiltro';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService} from 'primeng/components/common/messageservice';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -13,6 +13,19 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
 export class PessoasPesquisaComponent implements OnInit {
+
+  constructor(
+    private pessoaService: PessoaService,
+    private errorHandler: ErrorHandlerService,
+    private confirmation: ConfirmationService,
+    private messageService: MessageService,
+    private title: Title) {
+
+  }
+
+  ngOnInit(): void {
+    this.title.setTitle('Pesquisa de Pessoas');
+  }
 
   totalRegistros = 0;
   pessoas = [];
@@ -52,7 +65,7 @@ export class PessoasPesquisaComponent implements OnInit {
           this.tabela.first = 0;
         }
 
-        this.toasty.success('Pesssoa excluída com sucesso!');
+        this.messageService.add({severity: 'success', detail: 'Pesssoa excluída com sucesso!'});
       })
       .catch(erro => this.errorHandler.handler(erro));
   }
@@ -65,22 +78,9 @@ export class PessoasPesquisaComponent implements OnInit {
         const acao = novoStatus ? 'ativada' : 'desativada';
 
         pessoa.ativo = novoStatus;
-        this.toasty.success(`Pessoa ${acao} com sucesso!`);
+        this.messageService.add({severity: 'success', detail: `Pessoa ${acao} com sucesso!`});
       })
       .catch(erro => this.errorHandler.handler(erro));
-  }
-
-  constructor(
-    private pessoaService: PessoaService,
-    private errorHandler: ErrorHandlerService,
-    private confirmation: ConfirmationService,
-    private toasty: ToastyService,
-    private title: Title) {
-
-  }
-
-  ngOnInit(): void {
-    this.title.setTitle('Pesquisa de Pessoas');
   }
 
 }

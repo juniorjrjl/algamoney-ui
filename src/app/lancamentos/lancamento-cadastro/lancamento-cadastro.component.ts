@@ -7,9 +7,8 @@ import { LancamentoModelo } from '../../core/lancamento.modelo';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { PessoaService } from './../../pessoas/pessoa.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService} from 'primeng/components/common/messageservice';
 import { LancamentoService } from './../lancamento.service';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -33,7 +32,7 @@ export class LancamentoCadastroComponent implements OnInit {
     private errorHandlerService: ErrorHandlerService,
     private pessoaService: PessoaService,
     private lancamentoService: LancamentoService,
-    private toastyService: ToastyService,
+    private messageService: MessageService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private title: Title,
@@ -70,7 +69,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   public erroUpload(event) {
-    this.toastyService.error('Erro ao tentar enviar o anexo');
+    this.messageService.add({severity: 'error', detail: 'Erro ao tentar enviar o anexo'});
     this.uploadEmAndamento = false;
   }
 
@@ -95,7 +94,7 @@ export class LancamentoCadastroComponent implements OnInit {
       codigo: [],
       tipo: ['RECEITA', Validators.required],
       dataVencimento: [null, Validators.required],
-      dataPagamento: [null, Validators.required],
+      dataPagamento: [],
       descricao: [null, [this.validarObrigatoriedade, Validators.minLength(5)]],
       valor: [null, Validators.required],
       pessoa: this.formBuilder.group({
@@ -106,7 +105,7 @@ export class LancamentoCadastroComponent implements OnInit {
         codigo: [null, Validators.required],
         nome: []
       }),
-      observacao: [null],
+      observacao: [],
       anexo: [],
       urlAnexo: []
     });
@@ -166,7 +165,7 @@ export class LancamentoCadastroComponent implements OnInit {
   adicionar() {
     this.lancamentoService.adicionar(this.formulario.value)
       .then(lancamento => {
-        this.toastyService.success('Lançamento adicionado com sucesso!');
+        this.messageService.add({severity: 'success' , detail: 'Lançamento adicionado com sucesso!'});
         this.router.navigate(['/lancamentos', lancamento.codigo]);
       })
       .catch(erro => this.errorHandlerService.handler(erro));
@@ -177,9 +176,9 @@ export class LancamentoCadastroComponent implements OnInit {
     .then(lancamento => {
       this.formulario.setValue(lancamento);
       this.tituloAtualizacao();
-      this.toastyService.success('Lançamento alterado com sucesso!');
+      this.messageService.add({severity: 'success' , detail: 'Lançamento alterado com sucesso!'});
     })
-    .catch(erro => this.errorHandlerService.handler(erro));
+    .catch(erro => {console.log(erro); this.errorHandlerService.handler(erro); });
   }
 
   novo() {

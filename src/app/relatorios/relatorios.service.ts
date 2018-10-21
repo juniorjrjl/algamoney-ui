@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ResponseContentType, URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
-import { AuthHttp } from 'angular2-jwt';
+import { MoneyHttp } from './../seguranca/money.http';
 import * as moment from 'moment';
 import { environment } from './../../environments/environment';
 
@@ -10,17 +10,19 @@ export class RelatoriosService {
 
   private lancamentosUrl: string;
 
-  constructor(private authHttp: AuthHttp) {
+  constructor(private http: MoneyHttp) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
   }
 
   public relatorioLancamentosPorPessoas(inicio: Date, fim: Date) {
-    const params = new URLSearchParams();
-    params.set('inicio', moment(inicio).format('YYYY-MM-DD'));
-    params.set('fim', moment(fim).format('YYYY-MM-DD'));
-    return this.authHttp.get(`${this.lancamentosUrl}/relatorios/por-pessoa`, {search: params, responseType: ResponseContentType.Blob})
-      .toPromise()
-      .then(response => response.blob());
+    const params = new HttpParams({
+      fromObject: {
+        inicio: moment(inicio).format('YYYY-MM-DD'),
+        fim: moment(fim).format('YYYY-MM-DD')
+      }
+    });
+    return this.http.get(`${this.lancamentosUrl}/relatorios/por-pessoa`, {params, responseType: 'blob'})
+      .toPromise();
   }
 
 }
