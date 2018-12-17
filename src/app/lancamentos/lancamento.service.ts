@@ -3,7 +3,7 @@ import { environment } from 'environments/environment';
 import { LancamentoModelo } from '../core/lancamento.modelo';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+
 
 import { LancamentoFiltro } from './lancamentoFiltro';
 import * as moment from 'moment';

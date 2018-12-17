@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
 
-import 'rxjs/operator/toPromise';
+
 import * as moment from 'moment';
 import { MoneyHttp } from './../seguranca/money.http';
 
