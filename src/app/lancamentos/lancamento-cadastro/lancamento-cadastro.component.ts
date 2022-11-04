@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { MessageService } from 'primeng/api';
 
 import { LancamentoModelo } from '../../core/lancamento.modelo';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { PessoaService } from './../../pessoas/pessoa.service';
-import { MessageService} from 'primeng/components/common/messageservice';
 import { LancamentoService } from './../lancamento.service';
 
 @Component({
@@ -20,12 +22,8 @@ export class LancamentoCadastroComponent implements OnInit {
   tipos = [{label: 'Receita', value : 'RECEITA'}, {label: 'Despesa', value : 'DESPESA'}];
   categorias = [];
   pessoas = [];
-  formulario: FormGroup;
+  formulario!: FormGroup;
   uploadEmAndamento = false;
-
-   get editando() {
-     return Boolean(this.formulario.get('codigo').value);
-   }
 
   constructor(
     private categoriaService: CategoriaService,
@@ -41,34 +39,34 @@ export class LancamentoCadastroComponent implements OnInit {
   ngOnInit() {
     this.configurarFormulario();
     const codigoLancamento = this.activatedRoute.snapshot.params['codigo'];
-
+    this.title.setTitle('Novo Lançamento');
     if (codigoLancamento) {
       this.carregarLancamento(codigoLancamento);
-      this.tituloAtualizacao();
-    } else {
-      this.title.setTitle('Novo Lançamento');
     }
 
     this.carregarCategorias();
     this.carregarPessoas();
   }
 
-  public antesUploadAnexo(event) {
-    event.xhr.setrequesHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+  get editando() {
+    return Boolean(this.formulario.get('codigo')?.value);
+  }
+
+  public antesUploadAnexo() {
     this.uploadEmAndamento = true;
   }
 
-  public aoTerminarUploadAnexo(event) {
-    const anexo = JSON.parse(event.xhr.response);
+  public aoTerminarUploadAnexo(event: any) {
+    const anexo = event.originalEvent.body;
     this.formulario.patchValue(
       {
         anexo: anexo.nome,
-        urlAnexo: anexo.url
+        urlAnexo: anexo.url.replace('\\\\', 'http://')
       });
       this.uploadEmAndamento = false;
   }
 
-  public erroUpload(event) {
+  public erroUpload() {
     this.messageService.add({severity: 'error', detail: 'Erro ao tentar enviar o anexo'});
     this.uploadEmAndamento = false;
   }
@@ -78,7 +76,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   get nomeAnexo() {
-    const nome = this.formulario.get('anexo').value;
+    const nome = this.formulario.get('anexo')?.value;
     if (nome) {
       return nome.substring(nome.indexOf('_') + 1, nome.length);
     }
@@ -116,23 +114,22 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   validarTamanhoMinimo(valor: number) {
-    return (input: FormControl) => {
-      return (!input.value || input.value.length >= valor) ?
-        null :
-        {
-          tamanhoMinimo:
-            {
-              tamanhoEsperado: valor,
-              tamanhoAtual: input.value.length
-            }
-        };
-    };
+    return (input: FormControl) => 
+    (!input.value || input.value.length >= valor) ?
+      null :
+      { tamanhoMinimo:{ tamanhoEsperado: valor, tamanhoAtual: input.value.length }};
   }
 
   carregarLancamento(codigo: number) {
     this.lancamentoService.buscarPorCodigo(codigo)
       .then(lancamento =>   {
-        this.formulario.patchValue(lancamento);
+        this.formulario.patchValue(lancamento!);
+        if (this.formulario.get('urlAnexo')?.value)
+          this.formulario.patchValue({
+            urlAnexo: this.formulario.get('urlAnexo')?.value.replace('\\\\', 'https://')
+          });
+
+        this.tituloAtualizacao()
       })
       .catch(erro => this.errorHandlerService.handler(erro));
   }
@@ -140,7 +137,7 @@ export class LancamentoCadastroComponent implements OnInit {
   carregarCategorias() {
     this.categoriaService.listarTodas()
     .then(categorias => {
-      this.categorias = categorias.map(c =>  ({label: c.nome, value: c.codigo}) );
+      this.categorias = categorias.map((c: any) =>  ({label: c.nome, value: c.codigo}) );
     })
     .catch(erro => this.errorHandlerService.handler(erro));
   }
@@ -149,7 +146,7 @@ export class LancamentoCadastroComponent implements OnInit {
     this.pessoaService.listarTodas()
       .then(pessoas => {
         this.pessoas = pessoas
-          .map(p => ({ label: p.nome, value: p.codigo }));
+          .map((p: any) => ({ label: p.nome, value: p.codigo }));
       })
       .catch(erro => this.errorHandlerService.handler(erro));
   }
@@ -166,7 +163,7 @@ export class LancamentoCadastroComponent implements OnInit {
     this.lancamentoService.adicionar(this.formulario.value)
       .then(lancamento => {
         this.messageService.add({severity: 'success' , detail: 'Lançamento adicionado com sucesso!'});
-        this.router.navigate(['/lancamentos', lancamento.codigo]);
+        this.router.navigate(['/lancamentos', lancamento!.codigo]);
       })
       .catch(erro => this.errorHandlerService.handler(erro));
   }
@@ -178,21 +175,17 @@ export class LancamentoCadastroComponent implements OnInit {
       this.tituloAtualizacao();
       this.messageService.add({severity: 'success' , detail: 'Lançamento alterado com sucesso!'});
     })
-    .catch(erro => {console.log(erro); this.errorHandlerService.handler(erro); });
+    .catch(erro => this.errorHandlerService.handler(erro));
   }
 
   novo() {
     this.formulario.reset();
-
-    setTimeout(function() {
-      this.lancamento = new LancamentoModelo();
-    }.bind(this), 1);
-
+    this.formulario.patchValue(new LancamentoModelo())
     this.router.navigate(['/lancamentos/novo']);
   }
 
   private tituloAtualizacao() {
-    this.title.setTitle(`edição de Lançamento: ${this.formulario.get('descricao').value}`);
+    this.title.setTitle(`edição de Lançamento: ${this.formulario.get('descricao')?.value}`);
   }
 
 }

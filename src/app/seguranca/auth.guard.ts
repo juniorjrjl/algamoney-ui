@@ -1,9 +1,11 @@
-import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
 
   constructor(
@@ -15,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if (this.authService.isAccessTokenInvalido()) {
         return this.authService.obterNovoAccessToken()
           .then(() => {
@@ -23,13 +25,18 @@ export class AuthGuard implements CanActivate {
               this.router.navigate(['/login']);
               return false;
             }
-            return true;
+            return this.podeAcessarRota(next.data?.['roles'])
           });
-      }else if ((next.data.roles) && (!this.authService.temQualquerPermissao(next.data.roles))) {
-        this.router.navigate(['/nao-autorizado']);
-        return false;
-      }else {
-        return true;
-      }
+        }
+      return this.podeAcessarRota(next.data?.['roles'])
   }
+
+  podeAcessarRota(roles: string[]): boolean{
+    if (roles && !this.authService.temQualquerPermissao(roles)){
+      this.router.navigate(['/nao-autorizado'])
+      return false
+    }
+    return true;
+  }
+
 }

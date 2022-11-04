@@ -1,3 +1,4 @@
 export class CategoriaModelo {
-  codigo: number;
+  codigo?: number;
+
 }

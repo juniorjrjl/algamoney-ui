@@ -11,20 +11,35 @@ import { DashboardService } from './../dashboard.service';
 export class DashboardComponent implements OnInit {
 
   pieChartData: any;
-  options = {
+  lineChartData: any;
+
+  optionsLine = {
     tooltips: {
       callbacks: {
-        label: (tooltipItem, data) => {
-          const dataset = data.datasets[tooltipItem.datasetIndex];
-          const valor = dataset.data[tooltipItem.index];
-          const label = dataset.label ? (dataset.label + ': ') : '';
-          return label + this.decimalPipe.transform(valor, '1.2-2');
+        label: (context: any) => {
+          const label = context.label || ''
+          const value = context.raw || 0;
+          const formattedValue = this.decimalPipe.transform(value, '1.2-2', 'pt-BR')
+          return `${label}: ${formattedValue}`;
         }
       }
     }
   };
 
-  lineChartData: any;
+  optionsPie = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: any): any => {
+            let label = context.label || '';
+            let value = context.raw || 0;
+            let formattedValue = this.decimalPipe.transform(value, '1.2-2', 'pt_BR');
+            return `${label}: ${formattedValue}`;
+          }
+        }
+      }
+    }
+  }
 
   constructor(
     private dashboardService: DashboardService,
@@ -39,10 +54,10 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.lancamentosPorCategoria()
       .then(dados => {
         this.pieChartData = {
-          labels: dados.map(dado => dado.categoria.nome),
+          labels: dados!.map(dado => dado.categoria.nome),
           datasets: [
             {
-              data: dados.map(dado => dado.total),
+              data: dados!.map(dado => dado.total),
               backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6', '#DD4477', '#3366CC', '#DC3912']
             }
           ]
@@ -54,26 +69,27 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.lancamentosPorDia()
       .then(dados => {
         const diasMes = this.configurarDiasMes();
-        const totaisReceitas = this.totaisCadaDiasMes(dados.filter(dado => dado.tipo === 'RECEITA'), diasMes);
-        const totaisDespesas = this.totaisCadaDiasMes(dados.filter(dado => dado.tipo === 'DESPESAS'), diasMes);
+        const totaisReceitas = this.totaisCadaDiasMes(dados!.filter(dado => dado.tipo === 'RECEITA'), diasMes);
+        const totaisDespesas = this.totaisCadaDiasMes(dados!.filter(dado => dado.tipo === 'DESPESAS'), diasMes);
         this.lineChartData = {
           labels: diasMes,
           datasets: [
             {
               label: 'Receitas',
-            data: totaisReceitas,
-            borderColor: '#3366CC'
-          }, {
-            label: 'Despesas',
-            data: totaisDespesas,
-            borderColor: '#D62B00'
-          }
-        ]
-      };
-    });
+              data: totaisReceitas,
+              borderColor: '#3366CC'
+            }, 
+            {
+              label: 'Despesas',
+              data: totaisDespesas,
+              borderColor: '#D62B00'
+            }
+          ]
+        };
+      });
   }
 
-  private totaisCadaDiasMes(dados, diasMes) {
+  private totaisCadaDiasMes(dados: any, diasMes: any) {
     const totais: number[] = [];
     for (const dia of diasMes) {
       let total = 0;

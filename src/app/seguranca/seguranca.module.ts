@@ -1,18 +1,19 @@
 import { environment } from './../../environments/environment';
 import { AuthGuard } from './auth.guard';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { JwtModule } from '@auth0/angular-jwt';
-import { SegurancaRoutingModule } from './seguranca-routing.module';
-import { LoginFormComponent } from './login-form/login-form.component';
-import { InputTextModule } from 'primeng/inputtext';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+
 import { ButtonModule } from 'primeng/button';
-import { Http, RequestOptions } from '@angular/http';
-import { MoneyHttp } from './money.http';
-import { AuthService } from './auth.service';
-import { LogoutService } from './logout.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { LoginFormComponent } from './login-form/login-form.component';
+
+import { SegurancaRoutingModule } from './seguranca-routing.module';
+import { MoneyHttpInterceptor } from './money-http-interceptors';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -22,23 +23,31 @@ export function tokenGetter() {
   imports: [
     CommonModule,
     FormsModule,
-    InputTextModule,
-    ButtonModule,
+
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: environment.tokenWhitelistedDomains,
-        blacklistedRoutes: environment.tokenBlacklistedRoutes
+        allowedDomains: environment.tokenAllowedDomains,
+        disallowedRoutes: environment.tokenDisallowedRoutes
       }
     }),
+
+    InputTextModule,
+    ButtonModule,
+
     SegurancaRoutingModule
   ],
   declarations: [
     LoginFormComponent
   ],
   providers: [
-    AuthGuard,
-    LogoutService
+    JwtHelperService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MoneyHttpInterceptor,
+      multi: true
+    },
+    AuthGuard
   ]
 })
 export class SegurancaModule { }

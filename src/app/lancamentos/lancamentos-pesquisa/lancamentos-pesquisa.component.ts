@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
 
-import { MessageService} from 'primeng/components/common/messageservice';
+import { LazyLoadEvent, ConfirmationService, MessageService } from 'primeng/api';
+
 import { LancamentoFiltro } from './../lancamentoFiltro';
 import { LancamentoService } from './../lancamento.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
-import { Title } from '@angular/platform-browser';
-import { AuthService } from 'app/seguranca/auth.service';
+import { AuthService } from '../../seguranca/auth.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -18,7 +19,16 @@ export class LancamentosPesquisaComponent implements OnInit {
   totalregistros = 0;
   lancamentos = [];
   filtro = new LancamentoFiltro();
-  @ViewChild('tabela') tabela;
+  @ViewChild('tabela') tabela!: Table;
+
+  constructor(
+    private lancamentoService: LancamentoService,
+    private messageService: MessageService,
+    private confirmation: ConfirmationService,
+    private errorHandler: ErrorHandlerService,
+    private authService: AuthService,
+    private title: Title) {
+  }
 
   ngOnInit(): void {
     this.title.setTitle('Pesquisa de lançamentos');
@@ -57,17 +67,13 @@ export class LancamentosPesquisaComponent implements OnInit {
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event.first / event.rows;
+    const pagina = event.first! / event.rows!;
     this.pesquisar(pagina)
   }
 
-  constructor(
-    private lancamentoService: LancamentoService,
-    private messageService: MessageService,
-    private confirmation: ConfirmationService,
-    private errorHandler: ErrorHandlerService,
-    private authService: AuthService,
-    private title: Title) {
+  naoTemPermissao(permissao: string) {
+    return !this.authService.temPermissao(permissao);
   }
+
 
 }

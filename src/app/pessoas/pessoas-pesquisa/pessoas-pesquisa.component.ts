@@ -1,11 +1,12 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
+
+import { LazyLoadEvent, ConfirmationService, MessageService } from 'primeng/api';
 
 import { PessoaFiltro } from '../pessoaFiltro';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { MessageService} from 'primeng/components/common/messageservice';
-import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-pessoas-pesquisa',
@@ -30,9 +31,9 @@ export class PessoasPesquisaComponent implements OnInit {
   totalRegistros = 0;
   pessoas = [];
   filtro = new PessoaFiltro();
-  @ViewChild('tabela') tabela;
+  @ViewChild('tabela') tabela: any;
 
-  public pesquisar(pagina = 0) {
+  public pesquisar(pagina = 0): void {
     this.filtro.pagina = pagina;
     this.pessoaService.pesquisar(this.filtro)
     .then(resultado => {
@@ -43,7 +44,7 @@ export class PessoasPesquisaComponent implements OnInit {
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
-    const pagina = event.first / event.rows;
+    const pagina = event.first! / event.rows!;
     this.pesquisar(pagina)
   }
 

@@ -1,26 +1,26 @@
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 
-import { MoneyHttp } from './../seguranca/money.http';
-import * as moment from 'moment';
 import { environment } from './../../environments/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RelatoriosService {
 
   private lancamentosUrl: string;
 
-  constructor(private http: MoneyHttp) {
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
   }
 
   public relatorioLancamentosPorPessoas(inicio: Date, fim: Date) {
-    const params = new HttpParams({
-      fromObject: {
-        inicio: moment(inicio).format('YYYY-MM-DD'),
-        fim: moment(fim).format('YYYY-MM-DD')
-      }
-    });
+    const params = new HttpParams()
+        .set('inicio', this.datePipe.transform(inicio, 'yyyy-MM-dd')!)
+        .set('fim', this.datePipe.transform(fim, 'yyyy-MM-dd')!)
     return this.http.get(`${this.lancamentosUrl}/relatorios/por-pessoa`, {params, responseType: 'blob'})
       .toPromise();
   }

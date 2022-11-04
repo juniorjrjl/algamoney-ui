@@ -1,37 +1,44 @@
+import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import localePt from '@angular/common/locales/pt';
+
+import { NgModule } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { CategoriaService } from './../categorias/categoria.service';
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
-import localePt from '@angular/common/locales/pt';
-import { HttpClientModule } from '@angular/common/http';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ErrorHandlerService } from './error-handler.service';
-import { GrowlModule } from 'primeng/growl';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { LancamentoService } from '../lancamentos/lancamento.service';
-import { PessoaService } from '../pessoas/pessoa.service';
-import { ConfirmationService } from 'primeng/api';
-import { MessageService} from 'primeng/components/common/messageservice';
-import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
-import { AuthService } from './../seguranca/auth.service';
-import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
-import { DashboardService } from './../dashboard/dashboard.service';
-import { RelatoriosService } from './../relatorios/relatorios.service';
-import { MoneyHttp } from '../seguranca/money.http';
+import { ToastModule } from 'primeng/toast';
 
-registerLocaleData(localePt);
+import { AuthService } from './../seguranca/auth.service';
+import { ErrorHandlerService } from './error-handler.service';
+import { NavbarComponent } from './navbar/navbar.component';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+registerLocaleData(localePt, 'pt-BR');
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   imports: [
-    RouterModule,
     CommonModule,
-    HttpClientModule,
+    RouterModule,
 
-    GrowlModule,
+    ToastModule,
     ConfirmDialogModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [
     NavbarComponent,
@@ -40,24 +47,18 @@ registerLocaleData(localePt);
   ],
   exports: [
     NavbarComponent,
-    GrowlModule,
+    ToastModule,
     ConfirmDialogModule,
-    NaoAutorizadoComponent
   ],
   providers: [
-    LancamentoService,
-    PessoaService,
-    CategoriaService,
-    DashboardService,
-    RelatoriosService,
-    ConfirmationService,
-    MessageService,
-    Title,
-    JwtHelperService,
-    {provide: LOCALE_ID, useValue: 'pt'},
+    DatePipe,
     ErrorHandlerService,
     AuthService,
-    MoneyHttp
+
+    MessageService,
+    ConfirmationService,
+    Title,
+    TranslateService
   ]
 })
 export class CoreModule { }

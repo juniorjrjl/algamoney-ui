@@ -1,19 +1,21 @@
-import { MoneyHttp } from './../seguranca/money.http';
-import { environment } from 'environments/environment';
-import { LancamentoModelo } from '../core/lancamento.modelo';
-import { HttpParams } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-
+import { LancamentoModelo } from '../core/lancamento.modelo';
 import { LancamentoFiltro } from './lancamentoFiltro';
-import * as moment from 'moment';
+import { environment } from '../../environments/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LancamentoService {
 
   private lancamentoUrl: string;
 
-  constructor(private http: MoneyHttp) {
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe) {
     this.lancamentoUrl = `${environment.apiUrl}/lancamentos`;
   }
 
@@ -28,10 +30,10 @@ export class LancamentoService {
       params = params.set('descricao', filtro.descricao)
     }
     if (filtro.dataVencimentoInicio) {
-      params = params.set('dataVencimentoDe', moment(filtro.dataVencimentoInicio).format('YYYY-MM-DD'));
+      params = params.set('dataVencimentoDe', this.datePipe.transform(filtro.dataVencimentoInicio, 'yyyy-MM-dd')!);
     }
     if (filtro.dataVencimentoFim) {
-      params = params.set('dataVencimentoAte', moment(filtro.dataVencimentoFim).format('YYYY-MM-DD'));
+      params = params.set('dataVencimentoAte', this.datePipe.transform(filtro.dataVencimentoFim, 'yyyy-MM-dd')!);
     }
     return this.http.get<any>(`${this.lancamentoUrl}?resumo`, { params })
       .toPromise()
@@ -45,13 +47,12 @@ export class LancamentoService {
       });
   }
 
-  public excluir(codigo: number): Promise<void> {
-    return this.http.delete(`${this.lancamentoUrl}/${codigo}`)
+  public excluir(codigo: number): Promise<void | undefined> {
+    return this.http.delete<void>(`${this.lancamentoUrl}/${codigo}`)
       .toPromise()
-      .then(() => null);
   }
 
-  public adicionar(lancamento: LancamentoModelo): Promise<LancamentoModelo> {
+  public adicionar(lancamento: LancamentoModelo): Promise<LancamentoModelo | undefined> {
     return this.http.post<LancamentoModelo>(`${this.lancamentoUrl}`, lancamento)
       .toPromise();
   }
@@ -61,25 +62,17 @@ export class LancamentoService {
         lancamento)
       .toPromise()
       .then(response => {
-        const lancamentoAlterado = response;
-        this.converterStringsParaDatas([lancamentoAlterado]);
-        //TODO: crair um dto para receber um objeto sem esses campos
-        delete lancamentoAlterado.pessoa.ativo;
-        delete lancamentoAlterado.pessoa.endereco;
-        //TODO: crair um dto para receber um objeto sem esses campos
-        return lancamentoAlterado;
+        this.converterStringsParaDatas([response]);
+        return response;
       });
   }
 
-  public buscarPorCodigo(codigo: number): Promise<LancamentoModelo> {
+  public buscarPorCodigo(codigo: number): Promise<LancamentoModelo | undefined> {
     return this.http.get<LancamentoModelo>(`${this.lancamentoUrl}/${codigo}`)
       .toPromise()
       .then(response => {
-        const lancamento = response;
-
-        this.converterStringsParaDatas([lancamento]);
-
-        return lancamento;
+        this.converterStringsParaDatas([response!]);
+        return response;
       });
   }
 
@@ -87,14 +80,18 @@ export class LancamentoService {
     return `${this.lancamentoUrl}/anexo`;
   }
 
+  uploadHeaders() {
+    return new HttpHeaders()
+      .append('Authorization', 'Bearer ' + localStorage.getItem('token'))
+  }
+
   private converterStringsParaDatas(lancamentos: LancamentoModelo[]) {
     for (const lancamento of lancamentos) {
-      lancamento.dataVencimento = moment(lancamento.dataVencimento,
-        'YYYY-MM-DD').toDate();
+      let offset = new Date().getTimezoneOffset() * 60000;
+      lancamento.dataVencimento = new Date(new Date(lancamento.dataVencimento!).getTime() + offset);
 
       if (lancamento.dataPagamento) {
-        lancamento.dataPagamento = moment(lancamento.dataPagamento,
-          'YYYY-MM-DD').toDate();
+        lancamento.dataPagamento = new Date(new Date(lancamento.dataPagamento).getTime() + offset);
       }
     }
   }

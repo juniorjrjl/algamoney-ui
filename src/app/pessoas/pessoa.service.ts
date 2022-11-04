@@ -1,22 +1,22 @@
-import { environment } from 'environments/environment';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpParams, HttpHeaders } from '@angular/common/http';
-
 
 import { PessoaFiltro } from './pessoaFiltro';
 import { PessoaModelo } from '../core/pessoa.modelo';
-import { EstadoModelo } from 'app/core/estadoModelo';
-import { CidadeModelo } from 'app/core/cidadeModelo';
-import { MoneyHttp } from './../seguranca/money.http';
+import { EstadoModelo } from '../core/estadoModelo';
+import { CidadeModelo } from '../core/cidadeModelo';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PessoaService {
 
   private pessoaUrl: string;
   private cidadeUrl: string;
   private estadoUrl: string;
 
-  constructor(private http: MoneyHttp) {
+  constructor(private http: HttpClient) {
     this.pessoaUrl = `${environment.apiUrl}/pessoas`;
     this.cidadeUrl = `${environment.apiUrl}/cidades`;
     this.estadoUrl = `${environment.apiUrl}/estados`;
@@ -51,42 +51,40 @@ export class PessoaService {
       .then(response => response.content);
   }
 
-  public excluir(codigo: number): Promise<void> {
+  public excluir(codigo: number): Promise<void | undefined> {
 
-    return this.http.delete(`${this.pessoaUrl}/${codigo}`)
+    return this.http.delete<void>(`${this.pessoaUrl}/${codigo}`)
       .toPromise()
-      .then(() => null);
   }
 
-  public  mudarStatus(codigo: number, ativo: boolean): Promise<void> {
+  public  mudarStatus(codigo: number, ativo: boolean): Promise<void | undefined> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-    return this.http.put(`${this.pessoaUrl}/${codigo}/ativo`, ativo, { headers })
+    return this.http.put<void>(`${this.pessoaUrl}/${codigo}/ativo`, ativo, { headers })
       .toPromise()
-      .then(() => null);
   }
 
-  adicionar(pessoa: PessoaModelo): Promise<PessoaModelo> {
+  adicionar(pessoa: PessoaModelo): Promise<PessoaModelo | undefined> {
     return this.http.post<PessoaModelo>(this.pessoaUrl, pessoa)
       .toPromise();
   }
 
-  atualizar(pessoa: PessoaModelo): Promise<PessoaModelo> {
+  atualizar(pessoa: PessoaModelo): Promise<PessoaModelo | undefined> {
     return this.http.put<PessoaModelo>(`${this.pessoaUrl}/${pessoa.codigo}`,
         pessoa)
       .toPromise();
   }
 
-  buscarPorCodigo(codigo: number): Promise<PessoaModelo> {
+  buscarPorCodigo(codigo: number): Promise<PessoaModelo | undefined> {
     return this.http.get<PessoaModelo>(`${this.pessoaUrl}/${codigo}`)
       .toPromise();
   }
 
-  listarEstados(): Promise<EstadoModelo[]> {
+  listarEstados(): Promise<EstadoModelo[] | undefined> {
     return this.http.get<Array<EstadoModelo>>(`${this.estadoUrl}`)
       .toPromise();
   }
 
-  pesquisarCidades(codigoEstado: number): Promise<EstadoModelo[]> {
+  pesquisarCidades(codigoEstado: number): Promise<EstadoModelo[] | undefined> {
     const params = new HttpParams().append('estado', codigoEstado.toString());
     return this.http.get<Array<CidadeModelo>>(`${this.cidadeUrl}`, { params })
       .toPromise();

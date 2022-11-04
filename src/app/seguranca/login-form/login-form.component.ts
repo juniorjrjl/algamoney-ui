@@ -1,8 +1,8 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { AuthService } from './../auth.service';
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -16,7 +16,7 @@ export class LoginFormComponent implements OnInit {
     private errorHandlerService: ErrorHandlerService,
     private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   public login(usuario: string, senha: string) {

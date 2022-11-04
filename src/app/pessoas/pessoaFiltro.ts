@@ -1,5 +1,5 @@
 export class PessoaFiltro {
-  nome: string;
+  nome?: string;
   pagina = 0;
   itensPorPagina = 5;
 }

@@ -1,42 +1,45 @@
-import { LancamentosRoutingModule } from './lancamento-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
-import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { TooltipModule } from 'primeng/tooltip';
-import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SharedModule } from './../shared/shared.module';
-import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
+
+import { SharedModule } from '../shared/shared.module';
+import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
+import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
+import { LancamentosRoutingModule } from './lancamento-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
 
+    InputNumberModule,
     InputTextModule,
     ButtonModule,
-    SharedModule,
     TableModule,
     TooltipModule,
     InputTextareaModule,
     CalendarModule,
-    DropdownModule,
     SelectButtonModule,
-    CalendarModule,
+    DropdownModule,
     FileUploadModule,
     ProgressSpinnerModule,
-    CurrencyMaskModule,
+    
+    SharedModule,
     LancamentosRoutingModule
   ],
   declarations: [

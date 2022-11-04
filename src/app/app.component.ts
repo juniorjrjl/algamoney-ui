@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,16 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(private router: Router) {
+  constructor(
+    private config: PrimeNGConfig,
+    private translateService: TranslateService,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.translateService.setDefaultLang('pt');
+    this.translateService.get('primeng')
+      .subscribe(res => this.config.setTranslation(res));
   }
 
   public exibirNavBar() {

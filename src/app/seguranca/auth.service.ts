@@ -1,21 +1,25 @@
-import { environment } from 'environments/environment';
+import { environment } from '../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, EMPTY, map } from 'rxjs';
+import { NotAuthenticatedError } from './money-http-interceptors';
 
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
-  private oauthTokenURL: string;
-  public jwtPayload: any;
+  tokensRevokeUrl = environment.apiUrl + '/tokens/revoke';
+  oauthTokenUrl = environment.apiUrl + '/oauth/token'
+  jwtPayload: any;
 
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService
   ) {
-    this.oauthTokenURL = `${environment.apiUrl}/oauth/token`;
     this.carregarToken();
   }
 
@@ -25,14 +29,13 @@ export class AuthService {
     headers = headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
 
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
-
-    return this.http.post<any>(this.oauthTokenURL, body, { headers: headers, withCredentials: true })
+    
+    return this.http.post<any>(this.oauthTokenUrl, body, { headers: headers, withCredentials: true })
       .toPromise()
       .then(response => {
         this.armazenarToken(response.access_token)
       })
       .catch(response => {
-        console.log(response)
         if (response.status === 400) {
           if (response.error === 'invalid_grant') {
             return Promise.reject('Usuário e/ou senha inválido!')
@@ -48,13 +51,14 @@ export class AuthService {
     headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers = headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
 
-    return this.http.post<any>(this.oauthTokenURL, body, {headers: headers, withCredentials: true})
+    return this.http.post<any>(this.oauthTokenUrl, body, {headers: headers, withCredentials: true})
       .toPromise()
       .then(response => {
         this.armazenarToken(response.access_token)
       })
       .catch(error => {
-        return Promise.resolve(null);
+
+        return Promise.resolve();
       });
   }
 
@@ -72,7 +76,7 @@ export class AuthService {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao)
   }
 
-  public temQualquerPermissao(roles) {
+  public temQualquerPermissao(roles: any) {
     for (const role of roles) {
       if (this.temPermissao(role)) {
         return true;
@@ -91,6 +95,14 @@ export class AuthService {
     if (token) {
       this.armazenarToken(token);
     }
+  }
+
+  logout() {
+    return this.http.delete(this.tokensRevokeUrl, { withCredentials: true })
+      .toPromise()
+      .then(() => {
+        this.limparAccessToken();
+      });
   }
 
 }

@@ -1,9 +1,9 @@
-import { AuthGuard } from './../seguranca/auth.guard';
 import { NgModule } from '@angular/core';
-import { Routes, Router, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
+import { AuthGuard } from './../seguranca/auth.guard';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
+import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 
 const routes: Routes = [
   {
