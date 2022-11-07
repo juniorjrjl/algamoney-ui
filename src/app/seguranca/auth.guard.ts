@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
         return this.authService.obterNovoAccessToken()
           .then(() => {
             if (this.authService.isAccessTokenInvalido()) {
-              this.router.navigate(['/login']);
+              this.authService.login()
               return false;
             }
             return this.podeAcessarRota(next.data?.['roles'])

@@ -9,10 +9,10 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { LoginFormComponent } from './login-form/login-form.component';
 
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { MoneyHttpInterceptor } from './money-http-interceptors';
+import { AuthorizedComponent } from './authorized/authorized.component';
 
 
 export function tokenGetter() {
@@ -37,9 +37,6 @@ export function tokenGetter() {
 
     SegurancaRoutingModule
   ],
-  declarations: [
-    LoginFormComponent
-  ],
   providers: [
     JwtHelperService,
     {
@@ -48,6 +45,9 @@ export function tokenGetter() {
       multi: true
     },
     AuthGuard
+  ],
+  declarations: [
+    AuthorizedComponent
   ]
 })
 export class SegurancaModule { }
